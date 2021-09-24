@@ -29,12 +29,32 @@ def contact(request):
     return render(request, 'djangoapp/contactus.html', ctx)
 
 # Create a `login_request` view to handle sign in request
-# def login_request(request):
-# ...
+def login_request(request):
+    ctx = {} 
+    if request.method == "POST":
+        user = request.POST['user']
+        password = request.POST['password']
+        user = authenticate(username=user, password=password)
+
+        # If user is valid
+        if user is not None:
+            login(request, user)
+            return redirect('djangoapp:index')
+        else:
+            # Failed Login
+            resp =  redirect('djangoapp:index')
+            resp['Location'] += '?msg=login_failed'
+            return resp
+    else:
+        return redirect('djangoapp:index')
+
 
 # Create a `logout_request` view to handle sign out request
-# def logout_request(request):
-# ...
+def logout_request(request):
+    resp =  redirect('djangoapp:index')
+    resp['Location'] += '?msg=logout&user=' + request.user.username
+    logout(request)
+    return resp
 
 # Create a `registration_request` view to handle sign up request
 # def registration_request(request):

@@ -13,9 +13,10 @@
     <div class="navbar-nav navbar-right">
       {% if request.user.is_authenticated %}
           <a class="nav-item nav-link text-primary" href="#">({{ request.user.username }})</a>
-          <a class="nav-item nav-link text-primary" href="#">Logout</a>
+          <a class="nav-item nav-link text-primary" href="{% url 'djangoapp:logout' %}">Logout</a>
       {% else %}
-      <form>
+      <form method="POST" action="{% url 'djangoapp:login' %}">
+        {% csrf_token %}
         <div class="form-row justify-content-end">
           <div class="col-3">
             <input class="form-control mr-sm-1" type="text" name="user">
@@ -36,3 +37,21 @@
 
   </div>
 </nav>
+{% if 'msg' in request.GET %}
+  {% if request.GET.msg == 'login_failed' %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Log In failed!</strong> user or password incorrect.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endif %}
+  {% if request.GET.msg == 'logout' %}
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      <strong>{{ request.GET.user }}'s</strong> session closed.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endif %}
+{% endif %}
