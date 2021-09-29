@@ -23,10 +23,13 @@ function main(params) {
     
     const Filter = params.state !== undefined ? {
         selector: { st: { "$eq": params.state.replace(/"/g, '') }, },
-        fields: [ "id", "city", "state", "st", "address", "zip", "lat", "long" ]
+        fields: [ "id", "city", "state", "st", "address", "zip", "lat", "long", "short_name", "full_name" ]
+    } : params.dealerId !== undefined ? {
+        selector: { id: { "$eq": parseInt(params.dealerId) } },
+        fields: [ "id", "city", "state", "st", "address", "zip", "lat", "long", "short_name", "full_name" ]
     } : {
         selector: { },
-        fields: [ "id", "city", "state", "st", "address", "zip", "lat", "long" ]
+        fields: [ "id", "city", "state", "st", "address", "zip", "lat", "long", "short_name", "full_name" ]
     }
     
     
