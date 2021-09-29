@@ -3,8 +3,6 @@ from .models import CarModel, CarMake
 
 
 # Register your models here.
-admin.site.register(CarModel)
-admin.site.register(CarMake)
 
 # CarModelInline class
 class CarModelInline(admin.StackedInline):
@@ -21,3 +19,5 @@ class CarMakeAdmin(admin.ModelAdmin):
         inlines = [CarModelInline]
 
 # Register models here
+admin.site.register(CarModel, CarModelAdmin)
+admin.site.register(CarMake, CarMakeAdmin)
