@@ -8,7 +8,7 @@ admin.site.register(CarMake)
 
 # CarModelInline class
 class CarModelInline(admin.StackedInline):
-    model = Lesson 
+    model = CarModel
     extra = 5
 
 # CarModelAdmin class
