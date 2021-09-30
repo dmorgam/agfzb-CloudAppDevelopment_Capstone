@@ -29,7 +29,7 @@ def get_request(url, **kwargs):
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 def post_request(url, json_payload, **kwargs):
     try:
-        response = requests.post(url, data=json_payload, headers={'Content-Type': 'application/json'},
+        response = requests.post(url, json=json_payload, headers={'Content-Type': 'application/json'},
                                  params=kwargs)
     except:
         print("Network exception occurred on POST request")
@@ -73,17 +73,15 @@ def get_dealer_by_id(url, dealerId, **kwargs):
         # Get the row list in JSON as dealers
         dealers = json_result["rows"]
         # For each dealer object
-        for dealer in dealers:
-            # Get its content in `doc` object
-            dealer_doc = dealer
-            # Create a CarDealer object with values in `doc` object
-            dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
-                                   id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
-                                   short_name=dealer_doc["short_name"],
-                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
-            results.append(dealer_obj)
+        # Get its content in `doc` object
+        dealer_doc = dealers[0]
+        # Create a CarDealer object with values in `doc` object
+        dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
+                               id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
+                               short_name=dealer_doc["short_name"],
+                               st=dealer_doc["st"], zip=dealer_doc["zip"])
 
-    return results
+    return dealer_obj
 
 def get_dealers_by_state(url, state, **kwargs):
     results = []
@@ -124,7 +122,7 @@ def get_dealer_reviews_from_cf(url,dealerId):
                                       purchase=review["purchase"],review=review["review"],
                                       purchase_date=review["purchase_date"],car_make=review["car_make"],
                                       car_model=review["car_model"],car_year=review["car_year"],
-                                      sentiment=sentiment,id=review["id"])
+                                      sentiment=sentiment)
             results.append(review_obj)
     return results
 
